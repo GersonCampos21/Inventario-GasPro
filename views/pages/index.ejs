@@ -1,0 +1,252 @@
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-2 text-gray-800">Inventario de GasPro</h1>
+  <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+    For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
+      DataTables documentation</a>.</p>
+  <div class="row justify-content-center align-items-right g-2">
+    <div class="col" style="margin-left: 1400px;  margin-bottom: 20px; ">
+      <button class="btn btn-primary text-white w-10" onclick="window.modalAgregar.showModal();">
+        Agregar datos
+      </button>
+      <button class="btn btn-success text-white w-10" onclick="window.modal.showModal();">
+        Exportar
+      </button>
+    </div>
+  </div>
+ <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Lista de Productos GasPro</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>NOMBRE</th>
+              <th>DESCRIPCION</th>
+              <th>Cantidad</th>
+               <th>OPCIONES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% data.forEach((producto)=> { %>
+              <tr>
+                <td>
+                  <strong><%= producto.nombre%></strong>
+                </td>
+                <td>
+                  <strong> <%= producto.description%></strong>
+                </td>
+                <td>
+                  <strong><%= producto.quantity%></strong> 
+                </td>
+                <td style="width: 400px;">
+                  <button class="btn btn-success btn-icon-split" onclick="editarProducto('<%= producto.id %>')" data-id="<%= producto.id %>">
+                    <span class="icon text-white-50">
+                      <i><img src="../../assets/img/icons/listar.png" style="height: 25px;width: 25;"></i>
+                    </span><span class="text">Editar</span>
+                  </button>
+                  <button class="btn btn-warning btn-icon-split">
+                    <span class="icon text-white-50">
+                      <i><img src="../../assets/img/icons/actualizar.png" style="height: 25px;width: 25;"></i>
+                    </span><span class="text">Detalle</span>
+                  </button>
+                
+                  <button class="btn btn-danger btn-icon-split" onclick="Eliminar('<%=producto.id%>')" id="btnEliminar">
+                    <span class="icon text-white-50">
+                      <i><img src="../../assets/img/icons/eliminar.png" style="height: 25px;width: 25;"></i>
+                    </span><span class="text">Eliminar</span>
+                  </button>
+                </td>
+              </tr>
+              <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+</div>
+<!-- End of Main Content -->
+<!-- Bootstrap core JS-->
+<!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+<!-- Modales -->
+<dialog id="modalAgregar" class="rounded ">
+  <form name="frmAddDepa" action="/api/productos" method="post">
+    <div class="card" style="border-color: white;">
+      <div class="card-header bg-opacity-100 text-gray-100 text-center bg-primary">
+        <h2><b>Ingrese los datos del nuevo Producto</b></h2>
+      </div>
+      <div class="card-body">
+        <div class="row g-3 pl-5">
+          <div class="col-6">
+            <h4>Nombre</h4>
+            <input type="text" name="nombre" class="form-control bg-light px-4" placeholder="Ingresa el nombre " require
+              maxlength="50" required />
+          </div>
+          <div class="col-6">
+            <h4>Cantidad</h4>
+            <input type="number" name="quantity" class="form-control bg-light px-4" placeholder="Ingresa el precio "
+              require maxlength="50" min="1" required />
+          </div>
+          <div class="col-6">
+            <h4>Descripcion</h4>
+            <input type="text" name="description" class="form-control bg-light px-4"
+              placeholder="Ingrese la descripcion" require maxlength="50" />
+          </div>
+          <div class="col-6">
+            <h4>Fecha</h4>
+            <input type="date" name="fechaIngreso" class="form-control bg-light px-4" placeholder="Fecha" require
+              maxlength="50" />
+          </div>
+          <div class="col-6"  style="margin-top: 10px;">
+            <button class="btn btn-success w-100 button-add2" type="submit">
+              <a>Registrar</a>
+            </button>
+          </div>
+          <div class="col-6" style="margin-top: 10px;">
+            <button class="btn btn-danger w-100 button-add2" type="button" onclick="window.modalAgregar.close();">
+              Cerrar
+            </button>
+          </div>
+        </div>
+        <br>
+        <div class="card-footer bg-primary bg-opacity-100"></div>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<!-- Modal editar -->
+<dialog id="modalEditar" class="rounded ">
+  <form name="frmAddDepa" action="/api/productos/modificar" method="post">
+    <div class="card" style="border-color: white;">
+      <div class="card-header bg-opacity-100 text-gray-100 text-center bg-primary">
+        <h2><b>Estas modificando este articulo</b></h2>
+        <input type="hidden" name="id" id="id"  style="width: 0px; height: 0px;"">
+      </div>
+      <div class="card-body">
+        <div class="row g-3 pl-5">
+          <div class="col-6">
+            <h4>Nombre</h4>
+            <input type="text" name="nombre" class="form-control bg-light px-4" placeholder="Ingresa el nombre " require
+              maxlength="50" required />
+          </div>
+          <div class="col-6">
+            <h4>Cantidad</h4>
+            <input type="number" name="quantity" class="form-control bg-light px-4" placeholder="Ingresa el precio "
+              require maxlength="50" min="1" required />
+          </div>
+          <div class="col-6">
+            <h4>Descripcion</h4>
+            <input type="text" name="description" class="form-control bg-light px-4"
+              placeholder="Ingrese la descripcion" require maxlength="50" />
+          </div>
+          <div class="col-6">
+            <h4>Fecha</h4>
+            <input type="date" name="fechaIngreso" class="form-control bg-light px-4" placeholder="Fecha" require
+              maxlength="50" />
+          </div>
+     
+          <div class="col-6"  style="margin-top: 10px;">
+            <button class="btn btn-success w-100 button-add2" type="submit">
+              <a>Registrar</a>
+            </button>
+          </div>
+          <div class="col-6" style="margin-top: 10px;">
+            <button class="btn btn-danger w-100 button-add2" type="button" onclick="window.modalEditar.close();">
+              Cerrar
+            </button>
+          </div>
+        </div>
+        <br>
+        <div class="card-footer bg-primary bg-opacity-100"></div>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<script>
+  function editarProducto(productoId) {
+    // Encuentra la fila correspondiente al producto
+    var fila = document.querySelector(`button[data-id='${productoId}']`).closest('tr');
+    // Obtén los datos de las celdas de la fila
+    var nombre = fila.cells[0].innerText.trim();
+    var description = fila.cells[1].innerText.trim();
+    var quantity = fila.cells[2].innerText.trim();
+    // Asigna los datos a los campos del formulario en el modal
+    document.querySelector("#modalEditar input[name='id']").value = productoId;
+    document.querySelector("#modalEditar input[name='nombre']").value = nombre;
+    document.querySelector("#modalEditar input[name='description']").value = description;
+    document.querySelector("#modalEditar input[name='quantity']").value = quantity;
+    // Muestra el modal
+    window.modalEditar.showModal();
+  }
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="text/javascript">
+      function Eliminar(id) {
+      Swal.fire({
+        title: "Eliminar producto",
+        text: "¿Esta seguro que desea eliminar el producto?",
+        icon: "warning",
+        showCancelButton: true,
+        showCloseButton: true,
+        confirmButtonColor: "#0e8508",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, estoy seguro!",
+        cancelButtonText: "Cancelar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+           window.location.replace("/api/productos/delete/" + id);
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            mostrarMensaje("Producto NO eliminado", "Se ha cancelado la eliminación del producto con exito", "warning")
+        }
+      });
+    }
+</script>
+<script type="text/javascript">
+  //notificaciones
+  const urlParams = new URLSearchParams(window.location.search);
+  const myParam = urlParams.get("success");
+  switch (myParam) {
+    case "add": mostrarMensaje("Producto Agregado", "Se ha agregardo el producto exitosamente", "success")
+      break
+    case "error-add": mostrarMensaje("Producto NO Agregado", "Lo sentimos a ocurrido un error al agregar el producto", "error")
+      break
+    case "delete": mostrarMensaje("Producto Eliminado", "El producto a sido eliminado correctamente", "success")
+      break
+    case "error-delete": mostrarMensaje("Producto NO Eliminado", "Lo sentimos a ocurrido un error al eliminar este producto", "error")
+      break
+    case "update": mostrarMensaje("Producto modificado", "Se ha modificado el articulo exitosamente", "success")
+      break
+    case "error-update": mostrarMensaje("Error al actualizar", "Lo sentimos a ocurrido un error al modificar", "error")
+      break
+    
+  }
+
+  function mostrarMensaje(titulo, mensaje, icono) {
+    Swal.fire({
+      position: "center",
+      icon: icono,
+      title: titulo,
+      text: mensaje,
+      showConfirmButton: false,
+      timer: 2500,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.replace("/api/productos/delete/" + id);
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        mostrarMensaje("Producto NO eliminado", "Se ha cancelado la eliminación del producto con exito", "error")
+      }
+    });
+  }
+</script>
