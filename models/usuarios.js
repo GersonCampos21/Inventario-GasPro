@@ -5,10 +5,6 @@ const users = new Schema({
         type: String,
         require: [true,'El campo nombre es requerido'],
     },
-    cedula:{
-        type: Number,
-        require: [true,'La cedula es requerido'],
-    },
     email:{
         type: String,
         require: [true,'El correo es requerido'],
@@ -20,6 +16,10 @@ const users = new Schema({
     password:{
         type: String,
         require: [true,'La contraseña es requerida'],
+    },
+    rol:{
+        type: String,
+        require: [true,'El rol es requerido'],
     },
 
 })

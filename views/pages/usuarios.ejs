@@ -1,152 +1,100 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
-    <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Liste de tecnicos GasPro</h1>
-    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-      For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
-        DataTables documentation</a>.</p>
+  <!-- Page Heading -->
+  <h1 class="h3 mb-2 text-gray-800">Liste de tecnicos GasPro</h1>
+  <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+    For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
+      DataTables documentation</a>.</p>
 
-    <div class="row justify-content-center align-items-right g-2 resposive">
-      <div class="col" style= "margin-bottom: 20px; ">
-        <button class="btn btn-primary text-white w-10" onclick="window.modalAgregar.showModal();">
-          Agregar Tecnicos
-        </button>
-        <button class="btn btn-success text-white w-10" onclick="window.modal.showModal();">
-          Exportar
-        </button>
-          <!-- Sidebar Toggle (Topbar) -->
-        
-      </div>
+  <div class="row justify-content-center align-items-right g-2 resposive">
+    <div class="col" style="margin-bottom: 20px; ">
+      <button class="btn btn-primary text-white w-10" onclick="window.modalAgregar.showModal();">
+        Agregar Tecnicos
+      </button>
+      <button class="btn btn-success text-white w-10" onclick="window.modal.showModal();">
+        Exportar
+      </button>
+      <!-- Sidebar Toggle (Topbar) -->
+
     </div>
-   <!-- DataTales Example -->
-    <div class="card shadow mb-4">
-      <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Tecnicos de GasPro</h6>
-      </div>
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-            <thead>
+  </div>
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Tecnicos de GasPro</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Correo</th>
+              <th>Usuario</th>
+              <th>Contraseña</th>
+              <th>Rol</th>
+              <th>OPCIONES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% data.forEach((tecnico)=> { %>
               <tr>
-                <th>Nombre</th>
-                <th>Correo</th>
-                <th>Usuario</th>
-                <th>Contraseña</th>
-                <th>Rol</th>
-                 <th>OPCIONES</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% data.forEach((tecnico)=> { %>
-                <tr>
-                  <td>
-                    <strong><%=tecnico.nombre%></strong>
-                  </td>
-                  <td>
-                    <strong> <%=tecnico.email%></strong>
-                  </td>
-                  <td>
-                    <strong><%=tecnico.user%></strong> 
-                  </td>
-                  <td>
-                    <strong><%=tecnico.password%></strong>
-                  </td>
-                  <td>
-                    <strong><%=tecnico.rol%></strong>
-                  </td>
-                  <td style="width: 250px;">
-                    <button class="btn btn-success btn-icon-split" onclick="editarTecnico('<%=tecnico.id %>')" data-id="<%=tecnico.id %>">
-                      <span class="icon text-white-50">
-                        <i><img src="../../assets/img/icons/listar.png" style="height: 25px;width: 25;"></i>
-                      </span><span class="text">Editar</span>
-                    </button>
-                    <a href="#" class="btn btn-danger btn-circle">
-                      
+                <td>
+                  <strong>
+                    <%=tecnico.nombre%>
+                  </strong>
+                </td>
+                <td>
+                  <strong>
+                    <%=tecnico.email%>
+                  </strong>
+                </td>
+                <td>
+                  <strong>
+                    <%=tecnico.user%>
+                  </strong>
+                </td>
+                <td>
+                  <strong>
+                    <%=tecnico.password%>
+                  </strong>
+                </td>
+                <td>
+                  <strong>
+                    <%=tecnico.rol%>
+                  </strong>
+                </td>
+                <td>
+                  <button class="btn btn-warning btn-circle" onclick="editarTecnico('<%=tecnico.id %>')"
+                    data-id="<%=tecnico.id %>">
+                      <img src="../../assets/img/icons/iconEditar.png" style="height: 25px;width: 25;">
+                  </button>
                   </a>
-                    <button class="btn btn-danger btn-circle" onclick="Eliminar('<%=tecnico.id%>')" id="btnEliminar">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-                <% }) %>
-            </tbody>
-          </table>
-        </div>
+                  <button class="btn btn-danger btn-circle" onclick="Eliminar('<%=tecnico.id%>')" id="btnEliminar">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+              <% }) %>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
   <!-- /.container-fluid -->
-  </div>
-  <!-- End of Main Content -->
-  <!-- Bootstrap core JS-->
-  <!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
-  <!-- Modales -->
+</div>
+<!-- End of Main Content -->
+<!-- Bootstrap core JS-->
+<!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+<!-- Modales -->
 <dialog id="modalAgregar" class="rounded ">
-    <form name="frmAddDepa" action="/api/tecnicos" method="post">
-      <div class="card" style="border-color: white;">
-        <div class="card-header bg-opacity-100 text-gray-100 text-center bg-primary">
-          <h2><b>Agrega el nuevo tecnico</b></h2>
-        </div>
-        <div class="card-body">
-          <div class="row g-3 pl-5">
-            <div class="col-6">
-              <h6>Nombre</h6>
-              <input type="text" name="nombre" class="form-control bg-light px-4" placeholder="Digita el tecnico" require
-                maxlength="50" required />
-            </div>
-            <div class="col-6">
-              <h6>Correo</h6>
-              <input type="email" name="email" class="form-control bg-light px-4" placeholder="Ingresa el correo"
-                require maxlength="50" min="1" required />
-            </div>
-            <div class="col-6">
-              <h6>Usuario</h6>
-              <input type="text" name="user" class="form-control bg-light px-4"
-                placeholder="Digita el usuario del tecnico" require maxlength="50" />
-            </div>
-            <div class="col-6">
-              <h6>Rol del tecnico</h6>
-              <select class="form-control bg-light px-4" name="rol" id="rol">
-                <option value="tecnico">Técnico</option>
-                <option value="administrador">Administrador</option>
-            </select>
-            </div>
-            <div class="col-6">
-              <h6>Contraseña</h6>
-              <input type="password" name="password" class="form-control bg-light px-4" placeholder="Escribe la contraseña"
-                require maxlength="50" min="1" required />
-            </div>
-            <div class="col-6">
-              <h6>Confirmar contraseña</h6>
-              <input type="password" name="confirmarPassword" class="form-control bg-light px-4"
-                placeholder="Confirma tu contraseña" require maxlength="50" />
-            </div>
-            <div class="col-6"  style="margin-top: 10px;">
-              <button class="btn btn-success w-100 button-add2" type="submit">
-                <a>Registrar</a>
-              </button>
-            </div>
-            <div class="col-6" style="margin-top: 10px;">
-              <button class="btn btn-danger w-100 button-add2" type="button" onclick="window.modalAgregar.close();">
-                Cerrar
-              </button>
-            </div>
-          </div>
-          <br>
-          <div class="card-footer bg-primary bg-opacity-100"></div>
-        </div>
+  <form name="frmAddDepa" action="/api/tecnicos" method="post">
+    <div class="card" style="border-color: white;">
+      <div class="card-header bg-opacity-100 text-gray-100 text-center bg-primary">
+        <h2><b>Agrega el nuevo tecnico</b></h2>
       </div>
-    </form>
-</dialog>
-  <!-- Modal editar -->
-  <dialog id="modalEditar" class="rounded ">
-    <form name="frmAddDepa" action="/api/tecnicos/modificar" method="post">
-      <div class="card" style="border-color: white;">
-        <div class="card-header bg-opacity-100 text-gray-100 text-center bg-primary">
-          <h2><b>Estas modificando un Tecnico</b></h2>
-          <input type="hidden" name="id" id="id"  style="width: 0px; height: 0px;"">
-        </div>
-        <div class="row g-3 pl-5" style="padding-top: 20px;">
+      <div class="card-body">
+        <div class="row g-3 pl-5">
           <div class="col-6">
             <h6>Nombre</h6>
             <input type="text" name="nombre" class="form-control bg-light px-4" placeholder="Digita el tecnico" require
@@ -154,120 +102,178 @@
           </div>
           <div class="col-6">
             <h6>Correo</h6>
-            <input type="email" name="email" class="form-control bg-light px-4" placeholder="Ingresa el correo"
-              require maxlength="50" min="1" required />
+            <input type="email" name="email" class="form-control bg-light px-4" placeholder="Ingresa el correo" require
+              maxlength="50" min="1" required />
           </div>
-          <div class="col-6"  style="padding-top: 20px;">
+          <div class="col-6">
             <h6>Usuario</h6>
             <input type="text" name="user" class="form-control bg-light px-4"
               placeholder="Digita el usuario del tecnico" require maxlength="50" />
           </div>
-          <div class="col-6" style="padding-top: 20px;">
+          <div class="col-6">
             <h6>Rol del tecnico</h6>
-            <select class="form-control bg-light px-4" name="rol">
+            <select class="form-control bg-light px-4" name="rol" id="rol">
               <option value="tecnico">Técnico</option>
               <option value="administrador">Administrador</option>
+            </select>
+          </div>
+          <div class="col-6">
+            <h6>Contraseña</h6>
+            <input type="password" name="password" class="form-control bg-light px-4"
+              placeholder="Escribe la contraseña" require maxlength="50" min="1" required />
+          </div>
+          <div class="col-6">
+            <h6>Confirmar contraseña</h6>
+            <input type="password" name="confirmarPassword" class="form-control bg-light px-4"
+              placeholder="Confirma tu contraseña" require maxlength="50" />
+          </div>
+          <div class="col-6" style="margin-top: 10px;">
+            <button class="btn btn-success w-100 button-add2" type="submit">
+              <a>Registrar</a>
+            </button>
+          </div>
+          <div class="col-6" style="margin-top: 10px;">
+            <button class="btn btn-danger w-100 button-add2" type="button" onclick="window.modalAgregar.close();">
+              Cerrar
+            </button>
+          </div>
+        </div>
+        <br>
+        <div class="card-footer bg-primary bg-opacity-100"></div>
+      </div>
+    </div>
+  </form>
+</dialog>
+<!-- Modal editar -->
+<dialog id="modalEditar" class="rounded ">
+  <form name="frmAddDepa" action="/api/tecnicos/modificar" method="post">
+    <div class="card" style="border-color: white;">
+      <div class="card-header bg-opacity-100 text-gray-100 text-center bg-primary">
+        <h2><b>Estas modificando un Tecnico</b></h2>
+        <input type="hidden" name="id" id="id" style="width: 0px; height: 0px;"">
+        </div>
+        <div class=" row g-3 pl-5" style="padding-top: 20px;">
+        <div class="col-6">
+          <h6>Nombre</h6>
+          <input type="text" name="nombre" class="form-control bg-light px-4" placeholder="Digita el tecnico" require
+            maxlength="50" required />
+        </div>
+        <div class="col-6">
+          <h6>Correo</h6>
+          <input type="email" name="email" class="form-control bg-light px-4" placeholder="Ingresa el correo" require
+            maxlength="50" min="1" required />
+        </div>
+        <div class="col-6" style="padding-top: 20px;">
+          <h6>Usuario</h6>
+          <input type="text" name="user" class="form-control bg-light px-4" placeholder="Digita el usuario del tecnico"
+            require maxlength="50" />
+        </div>
+        <div class="col-6" style="padding-top: 20px;">
+          <h6>Rol del tecnico</h6>
+          <select class="form-control bg-light px-4" name="rol">
+            <option value="tecnico">Técnico</option>
+            <option value="administrador">Administrador</option>
           </select>
-          </div>
-            <div class="col-6"  style="margin-top: 10px;">
-              <button class="btn btn-success w-100 button-add2" type="submit">
-                <a>Registrar</a>
-              </button>
-            </div>
-            <div class="col-6" style="margin-top: 10px;">
-              <button class="btn btn-danger w-100 button-add2" type="button" onclick="window.modalEditar.close();">
-                Cerrar
-              </button>
-            </div>
-          </div>
-          <br>
-          <div class="card-footer bg-primary bg-opacity-100"></div>
+        </div>
+        <div class="col-6" style="margin-top: 10px;">
+          <button class="btn btn-success w-100 button-add2" type="submit">
+            <a>Registrar</a>
+          </button>
+        </div>
+        <div class="col-6" style="margin-top: 10px;">
+          <button class="btn btn-danger w-100 button-add2" type="button" onclick="window.modalEditar.close();">
+            Cerrar
+          </button>
         </div>
       </div>
-    </form>
-  </dialog>
-  
-<script>
-    function editarTecnico(productoId) {
-      
-      // Encuentra la fila correspondiente al producto
-      var fila = document.querySelector(`button[data-id='${productoId}']`).closest('tr');
-      // Obtén los datos de las celdas de la fila
-      var nombre = fila.cells[0].innerText.trim();
-      var email = fila.cells[1].innerText.trim();
-      var user = fila.cells[2].innerText.trim();
-      // var rol = fila.cells[4].innerText.trim();
-      console.log("Aqui", nombre, email,user,rol)
-      // Asigna los datos a los campos del formulario en el modal
-      document.querySelector("#modalEditar input[name='id']").value = productoId;
-      document.querySelector("#modalEditar input[name='nombre']").value = nombre;
-      document.querySelector("#modalEditar input[name='email']").value = email;
-      document.querySelector("#modalEditar input[name='user']").value = user;
-    
-    
-      // Muestra el modal
-      window.modalEditar.showModal();
-    }
-  </script>
-  
+      <br>
+      <div class="card-footer bg-primary bg-opacity-100"></div>
+    </div>
+    </div>
+  </form>
+</dialog>
 
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script type="text/javascript">
-        function Eliminar(id) {
-        console.log("Aqui")
-        Swal.fire({
-          title: "Eliminas tecnicos",
-          text: "¿Esta seguro que desea eliminar el tecnico?",
-          icon: "warning",
-          showCancelButton: true,
-          showCloseButton: true,
-          confirmButtonColor: "#0e8508",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Si, estoy seguro!",
-          cancelButtonText: "Cancelar",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.replace("/api/tecnicos/delete/"+ id);
-          } else if (result.dismiss === Swal.DismissReason.cancel) {
-              mostrarMensaje("Producto NO eliminado", "Se ha cancelado la eliminación del producto con exito", "warning")
-          }
-        });
+<script>
+  function editarTecnico(productoId) {
+
+    // Encuentra la fila correspondiente al producto
+    var fila = document.querySelector(`button[data-id='${productoId}']`).closest('tr');
+    // Obtén los datos de las celdas de la fila
+    var nombre = fila.cells[0].innerText.trim();
+    var email = fila.cells[1].innerText.trim();
+    var user = fila.cells[2].innerText.trim();
+    // var rol = fila.cells[4].innerText.trim();
+    console.log("Aqui", nombre, email, user, rol)
+    // Asigna los datos a los campos del formulario en el modal
+    document.querySelector("#modalEditar input[name='id']").value = productoId;
+    document.querySelector("#modalEditar input[name='nombre']").value = nombre;
+    document.querySelector("#modalEditar input[name='email']").value = email;
+    document.querySelector("#modalEditar input[name='user']").value = user;
+
+
+    // Muestra el modal
+    window.modalEditar.showModal();
+  }
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="text/javascript">
+  function Eliminar(id) {
+    console.log("Aqui")
+    Swal.fire({
+      title: "Eliminas tecnicos",
+      text: "¿Esta seguro que desea eliminar el tecnico?",
+      icon: "warning",
+      showCancelButton: true,
+      showCloseButton: true,
+      confirmButtonColor: "#0e8508",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, estoy seguro!",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.replace("/api/tecnicos/delete/" + id);
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        mostrarMensaje("Producto NO eliminado", "Se ha cancelado la eliminación del producto con exito", "warning")
       }
-  </script>
-  <script type="text/javascript">
-    //notificaciones
-    const urlParams = new URLSearchParams(window.location.search);
-    const myParam = urlParams.get("success");
-    switch (myParam) {
-      case "add": mostrarMensaje("Tecnico Agregado", "Se ha agregado el tecnico exitosamente", "success")
-        break
-      case "error-add": mostrarMensaje("Tecnico NO Agregado", "Lo sentimos a ocurrido un error al agregar el producto", "error")
-        break
-      case "delete": mostrarMensaje("Tecnico Eliminado", "El Tecnico a sido eliminado correctamente", "success")
-        break
-      case "error-delete": mostrarMensaje("Tecnico NO Eliminado", "Lo sentimos a ocurrido un error al eliminar este Tecnico", "error")
-        break
-      case "update": mostrarMensaje("Tecnico modificado", "Se ha modificado el Tecnico exitosamente", "success")
-        break
-      case "error-update": mostrarMensaje("Error al actualizar", "Lo sentimos a ocurrido un error al modificar", "error")
-        break
-      
-    }
-  
-    function mostrarMensaje(titulo, mensaje, icono) {
-      Swal.fire({
-        position: "center",
-        icon: icono,
-        title: titulo,
-        text: mensaje,
-        showConfirmButton: false,
-        timer: 2500,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.replace("/api/tecnicos/delete/" + id);
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          mostrarMensaje("Producto NO eliminado", "Se ha cancelado la eliminación del producto con exito", "error")
-        }
-      });
-    }
-  </script>
+    });
+  }
+</script>
+<script type="text/javascript">
+  //notificaciones
+  const urlParams = new URLSearchParams(window.location.search);
+  const myParam = urlParams.get("success");
+  switch (myParam) {
+    case "add": mostrarMensaje("Tecnico Agregado", "Se ha agregado el tecnico exitosamente", "success")
+      break
+    case "error-add": mostrarMensaje("Tecnico NO Agregado", "Lo sentimos a ocurrido un error al agregar el producto", "error")
+      break
+    case "delete": mostrarMensaje("Tecnico Eliminado", "El Tecnico a sido eliminado correctamente", "success")
+      break
+    case "error-delete": mostrarMensaje("Tecnico NO Eliminado", "Lo sentimos a ocurrido un error al eliminar este Tecnico", "error")
+      break
+    case "update": mostrarMensaje("Tecnico modificado", "Se ha modificado el Tecnico exitosamente", "success")
+      break
+    case "error-update": mostrarMensaje("Error al actualizar", "Lo sentimos a ocurrido un error al modificar", "error")
+      break
+
+  }
+
+  function mostrarMensaje(titulo, mensaje, icono) {
+    Swal.fire({
+      position: "center",
+      icon: icono,
+      title: titulo,
+      text: mensaje,
+      showConfirmButton: false,
+      timer: 2500,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.replace("/api/tecnicos/delete/" + id);
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        mostrarMensaje("Producto NO eliminado", "Se ha cancelado la eliminación del producto con exito", "error")
+      }
+    });
+  }
+</script>
