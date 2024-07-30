@@ -217,7 +217,7 @@
     }).then((result) => {
       if (result.isConfirmed) {
         console.log("Aqui error")
-        window.location.replace("/api/tecnicos/delete/" + id);
+        window.location.replace("/api/productos/delete/" + id);
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         console.log("Aqui No se puedo")
         mostrarMensaje("Producto NO eliminado", "Se ha cancelado la eliminación del producto con exito", "warning")
