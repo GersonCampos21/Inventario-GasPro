@@ -6,7 +6,6 @@ const productsGET = async (req = request, res = response) => {
    try {
     //Obtener de la base de datos el select * from
     const user = await productoCon.find()
-    console.log()
     res.render('index',{titulo:"Control Inventario",data:user,layout:"../layouts/layoutHome"})
   } catch (err) {
     console.log(err);
@@ -16,9 +15,9 @@ const productsGET = async (req = request, res = response) => {
 
 const productsPOST = async (req = request, res = response) => {
   try {
-    const SKU = Math.random().toString().substring(2, 8); // Genera un número aleatorio y toma los primeros 8 dígitos como ID
-    const { nombre, quantity, description,fechaIngreso  } = req.body;
-    const product = new productoCon({ nombre, quantity, description, SKU,fechaIngreso });
+    console.log(req.body)
+    const { nombre, quantity, description,fechaIngreso,img  } = req.body;
+    const product = new productoCon({ nombre, quantity, description,fechaIngreso,img });
     product.save();
     res.redirect("/api/productos?success=" + encodeURIComponent("add"))
   } catch (err) {

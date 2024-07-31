@@ -16,9 +16,9 @@ const producto = new Schema({
     fechaIngreso:{
         type: Date,
         require: [true,'El campo fecha es requerido'],
-    }, SKU:{
-        type: Number,
-        require: [true,'El campo sku es requerido'],
+    }, img:{
+        type: String,
+        require: [false,'La imagen no es requerida'],
     },
 
 })

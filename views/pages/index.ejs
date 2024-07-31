@@ -10,10 +10,10 @@
   <div class="row justify-content-center align-items-right g-2 resposive">
     <div class="col" style="margin-bottom: 20px; ">
       <button class="btn btn-primary text-white w-10" onclick="window.modalAgregar.showModal();">
-        Agregar datos
+        Agregar Articulo
       </button>
       <button class="btn btn-success text-white w-10" onclick="window.modal.showModal();">
-        Exportar
+        Registrar Salida
       </button>
     </div>
   </div>
@@ -24,7 +24,7 @@
     </div>
     <div class="card-body">
       <div class="table-responsive">
-        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
           <thead>
             <tr>
               <th>Nombre</th>
@@ -49,9 +49,9 @@
                   </strong>
                 </td>
                 <td>
-                  <center><strong>
+                  <strong>
                       <%=producto.quantity%>
-                    </strong> </center>
+                    </strong>
                 </td>
                 <td>
                   <strong>
@@ -59,12 +59,16 @@
                   </strong>
                 </td>
                 <td>
-                  <strong>
-                    <%=producto.Imagen%>
-                  </strong>
+
+
+                    <button class="btn btn-info btn-icon-split"data-toggle="modal" data-target="#imageModal" data-id=" <%=producto.img%>">
+                      <span class="icon text-white-50">
+                        <i><img src="../../assets/img/icons/Iconimagen.png" style="height: 25px;width: 25;"></i>
+                      </span><span class="text">Ver Imagen</span>
+                    </button>
                 </td>
                 <td>
-                  <button class="btn btn-warning btn-circle" onclick="editarProducto('<%= producto.id %>')"
+                  <button class="btn btn-success btn-circle" onclick="editarProducto('<%= producto.id %>')"
                     data-id="<%= producto.id %>">
                     <img src="../../assets/img/icons/iconEditar.png" style="height: 25px;width: 25;">
                   </button>
@@ -87,6 +91,22 @@
 <!-- Bootstrap core JS-->
 <!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
 <!-- Modales -->
+<div class="modal fade" id="imageModal" name="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel">Imagen</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img src="" id="modalImage" alt="Imagen" class="img-fluid">
+      </div>
+    </div>
+  </div>
+</div>
+
 <dialog id="modalAgregar" class="rounded ">
   <form name="frmAddDepa" action="/api/productos" method="post">
     <div class="card" style="border-color: white;">
@@ -97,12 +117,12 @@
         <div class="row g-3 pl-5">
           <div class="col-6">
             <h4>Nombre</h4>
-            <input type="text" name="nombre" class="form-control bg-light px-4" placeholder="Ingresa el nombre " require
+            <input type="text" name="nombre" class="form-control bg-light px-4" placeholder="Ingresa el nombre del producto" require
               maxlength="50" required />
           </div>
           <div class="col-6">
             <h4>Cantidad</h4>
-            <input type="number" name="quantity" class="form-control bg-light px-4" placeholder="Ingresa el precio "
+            <input type="number" name="quantity" class="form-control bg-light px-4" placeholder="Ingresa la cantidad de productos "
               require maxlength="50" min="1" required />
           </div>
           <div class="col-6">
@@ -113,6 +133,11 @@
           <div class="col-6">
             <h4>Fecha</h4>
             <input type="date" name="fechaIngreso" class="form-control bg-light px-4" placeholder="Fecha" require
+              maxlength="50" />
+          </div>
+          <div>
+            <h4>Agrega la imagen del producto</h4>
+            <input type="file" name="img" class="form-control bg-light px-4"  require
               maxlength="50" />
           </div>
           <div class="col-6" style="margin-top: 10px;">
@@ -182,77 +207,14 @@
   </form>
 </dialog>
 
+<!-- este script configura la ruta de la imagen que viene desde la base de datos. -->
 <script>
-  function editarProducto(productoId) {
-    // Encuentra la fila correspondiente al producto
-    var fila = document.querySelector(`button[data-id='${productoId}']`).closest('tr');
-    // Obtén los datos de las celdas de la fila
-    var nombre = fila.cells[0].innerText.trim();
-    var description = fila.cells[1].innerText.trim();
-    var quantity = fila.cells[2].innerText.trim();
-    // Asigna los datos a los campos del formulario en el modal
-    document.querySelector("#modalEditar input[name='id']").value = productoId;
-    document.querySelector("#modalEditar input[name='nombre']").value = nombre;
-    document.querySelector("#modalEditar input[name='description']").value = description;
-    document.querySelector("#modalEditar input[name='quantity']").value = quantity;
-    // Muestra el modal
-    window.modalEditar.showModal();
-  }
-</script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script type="text/javascript">
-  function Eliminar(id) {
-    Swal.fire({
-      title: "Eliminar producto",
-      text: "¿Esta seguro que desea eliminar el producto?",
-      icon: "warning",
-      showCancelButton: true,
-      showCloseButton: true,
-      confirmButtonColor: "#0e8508",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si, estoy seguro!",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        console.log("Aqui error")
-        window.location.replace("/api/productos/delete/" + id);
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        console.log("Aqui No se puedo")
-        mostrarMensaje("Producto NO eliminado", "Se ha cancelado la eliminación del producto con exito", "warning")
-      }
-    });
-  }
-</script>
-<script type="text/javascript">
-  //notificaciones
-  const urlParams = new URLSearchParams(window.location.search);
-  const myParam = urlParams.get("success");
-  switch (myParam) {
-    case "add": mostrarMensaje("Producto Agregado", "Se ha agregardo el producto exitosamente", "success")
-      break
-    case "error-add": mostrarMensaje("Producto NO Agregado", "Lo sentimos a ocurrido un error al agregar el producto", "error")
-      break
-    case "delete": mostrarMensaje("Producto Eliminado", "El producto a sido eliminado correctamente", "success")
-      break
-    case "error-delete": mostrarMensaje("Producto NO Eliminado", "Lo sentimos a ocurrido un error al eliminar este producto", "error")
-      break
-    case "update": mostrarMensaje("Producto modificado", "Se ha modificado el articulo exitosamente", "success")
-      break
-    case "error-update": mostrarMensaje("Error al actualizar", "Lo sentimos a ocurrido un error al modificar", "error")
-      break
-
-  }
-
-  function mostrarMensaje(titulo, mensaje, icono) {
-    Swal.fire({
-      position: "center",
-      icon: icono,
-      title: titulo,
-      text: mensaje,
-      showConfirmButton: false,
-      timer: 2500,
-    })
-  }
+  // Evento para cuando se va a mostrar el modal
+  $('#imageModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Botón que disparó el modal
+    var imageUrl = button.data('id').trim(); // Extraer la información de data-id y eliminar espacios adicionales
+    var modal = $(this);
+    var imagePath = "../../assets/inventario/" + imageUrl; // Construir la ruta de la imagen
+    modal.find('.modal-body img').attr('src', imagePath); // Actualizar el atributo src de la imagen
+});
 </script>

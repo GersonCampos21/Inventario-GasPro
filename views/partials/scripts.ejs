@@ -19,4 +19,177 @@
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- Incluye DataTables después de jQuery -->
-<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+ <!-- jquery y bootstrap -->
+ <script src="https://code.jquery.com/jquery-3.5.1.js"></script>   
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+ 
+ <!-- datatables con bootstrap -->
+ <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+ <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap5.min.js"></script>
+
+ <!-- Para usar los botones -->
+ <script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+ <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
+<!-- Para los estilos en Excel     -->
+<script src="https://cdn.jsdelivr.net/npm/datatables-buttons-excel-styles@1.1.1/js/buttons.html5.styles.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/datatables-buttons-excel-styles@1.1.1/js/buttons.html5.styles.templates.min.js"></script>
+
+
+<style>
+ .dt-buttons, .dataTables_length, .dataTables_filter {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+
+  .dt-buttons .btn {
+    height: 38px; /* Ajusta esta altura según el botón */
+    padding: 6px 12px; /* Ajusta el padding para el botón */
+  }
+
+  .dataTables_length select {
+    height: 38px; /* Ajusta la altura para coincidir con el botón */
+    padding: 6px 12px; /* Ajusta el padding para el select */
+    width: 100px; /* Ajusta el ancho para que sea más grande */
+    box-sizing: border-box; /* Asegura que el padding no aumente el tamaño del elemento */
+    border: 1px solid #28a745; /* Estilo de borde similar al botón */
+    border-radius: 4px; /* Bordes redondeados similares al botón */
+    background-color: #f8f9fa; /* Fondo similar al botón */
+    color: #28a745; /* Color del texto similar al botón */
+    outline: none; /* Quita el borde de enfoque */
+  }
+  .dataTables_length label {
+    display: flex;
+    align-items: center;
+  }
+  /* Estilos para el encabezado de la tabla */
+  thead th {
+    color: black /* Color del texto del encabezado */
+  }
+</style>
+
+
+<script>
+  //Data table que va con propiedad de cambiar la cantidad de filas, exportar a excel
+  $(document).ready(function () {
+      $("#myTable").DataTable({
+          dom: '<"top"lfB>rt<"bottom"ip><"clear">', // Modifica el layout para incluir el combobox (l), el filtro (f), los botones (B), la tabla (rt), y la paginación (ip)
+          lengthChange: true, // Activa el combobox para seleccionar el número de filas
+          lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]], // Opciones para el combobox
+          buttons: {
+              dom: {
+                  button: {
+                      className: 'btn'
+                  }
+              },
+              buttons: [
+              {
+                  extend: "excel",
+                  text: '<i class="fas fa-file-excel"></i> Exportar',
+                  className: 'btn btn-outline-success',
+                  excelStyles: {                
+                      "template": [
+                          "header_green",
+                          "title_medium"
+                      ]   
+                  },
+              }
+              ]            
+          },
+          language: {
+              lengthMenu: "Mostrar _MENU_", // Texto para el combobox
+              zeroRecords: "No se encontraron registros",
+              info: "Mostrando página _PAGE_ de _PAGES_",
+              infoEmpty: "No hay registros disponibles",
+              infoFiltered: "(filtrado de _MAX_ registros en total)",
+              search: "Buscar:",
+              paginate: {
+                  first: "Primero",
+                  last: "Último",
+                  next: "Siguiente",
+                  previous: "Anterior"
+              }
+          }
+      });
+  });
+</script>
+
+<script>
+  function editarProducto(productoId) {
+    // Encuentra la fila correspondiente al producto
+    var fila = document.querySelector(`button[data-id='${productoId}']`).closest('tr');
+    // Obtén los datos de las celdas de la fila
+    var nombre = fila.cells[0].innerText.trim();
+    var description = fila.cells[1].innerText.trim();
+    var quantity = fila.cells[2].innerText.trim();
+    // Asigna los datos a los campos del formulario en el modal
+    document.querySelector("#modalEditar input[name='id']").value = productoId;
+    document.querySelector("#modalEditar input[name='nombre']").value = nombre;
+    document.querySelector("#modalEditar input[name='description']").value = description;
+    document.querySelector("#modalEditar input[name='quantity']").value = quantity;
+    // Muestra el modal
+    window.modalEditar.showModal();
+  }
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="text/javascript">
+  function Eliminar(id) {
+    Swal.fire({
+      title: "Eliminar producto",
+      text: "¿Esta seguro que desea eliminar el producto?",
+      icon: "warning",
+      showCancelButton: true,
+      showCloseButton: true,
+      confirmButtonColor: "#0e8508",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, estoy seguro!",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log("Aqui error")
+        window.location.replace("/api/productos/delete/" + id);
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        console.log("Aqui No se puedo")
+        mostrarMensaje("Producto NO eliminado", "Se ha cancelado la eliminación del producto con exito", "warning")
+      }
+    });
+  }
+</script>
+<script type="text/javascript">
+  //notificaciones
+  const urlParams = new URLSearchParams(window.location.search);
+  const myParam = urlParams.get("success");
+  switch (myParam) {
+    case "add": mostrarMensaje("Producto Agregado", "Se ha agregardo el producto exitosamente", "success")
+      break
+    case "error-add": mostrarMensaje("Producto NO Agregado", "Lo sentimos a ocurrido un error al agregar el producto", "error")
+      break
+    case "delete": mostrarMensaje("Producto Eliminado", "El producto a sido eliminado correctamente", "success")
+      break
+    case "error-delete": mostrarMensaje("Producto NO Eliminado", "Lo sentimos a ocurrido un error al eliminar este producto", "error")
+      break
+    case "update": mostrarMensaje("Producto modificado", "Se ha modificado el articulo exitosamente", "success")
+      break
+    case "error-update": mostrarMensaje("Error al actualizar", "Lo sentimos a ocurrido un error al modificar", "error")
+      break
+
+  }
+
+  function mostrarMensaje(titulo, mensaje, icono) {
+    Swal.fire({
+      position: "center",
+      icon: icono,
+      title: titulo,
+      text: mensaje,
+      showConfirmButton: false,
+      timer: 2500,
+    })
+  }
+</script>
+
+
