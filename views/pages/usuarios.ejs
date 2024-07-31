@@ -1,10 +1,8 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
   <!-- Page Heading -->
-  <h1 class="h3 mb-2 text-gray-800">Liste de tecnicos GasPro</h1>
-  <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-    For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
-      DataTables documentation</a>.</p>
+  <h1 class="h3 mb-2 text-gray-800">Lista de tecnicos GasPro</h1>
+  <p class="mb-4">Modulo para administrar los tecnicos de GasPro</p>
 
   <div class="row justify-content-center align-items-right g-2 resposive">
     <div class="col" style="margin-bottom: 20px; ">
@@ -70,7 +68,7 @@
                       <img src="../../assets/img/icons/iconEditar.png" style="height: 25px;width: 25;">
                   </button>
                   </a>
-                  <button class="btn btn-danger btn-circle" onclick="Eliminar('<%=tecnico.id%>')" id="btnEliminar">
+                  <button class="btn btn-danger btn-circle" onclick="EliminarTecnico('<%=tecnico.id%>')" id="btnEliminar">
                     <i class="fas fa-trash"></i>
                   </button>
                 </td>
@@ -193,87 +191,3 @@
   </form>
 </dialog>
 
-<script>
-  function editarTecnico(productoId) {
-
-    // Encuentra la fila correspondiente al producto
-    var fila = document.querySelector(`button[data-id='${productoId}']`).closest('tr');
-    // Obtén los datos de las celdas de la fila
-    var nombre = fila.cells[0].innerText.trim();
-    var email = fila.cells[1].innerText.trim();
-    var user = fila.cells[2].innerText.trim();
-    // var rol = fila.cells[4].innerText.trim();
-    console.log("Aqui", nombre, email, user, rol)
-    // Asigna los datos a los campos del formulario en el modal
-    document.querySelector("#modalEditar input[name='id']").value = productoId;
-    document.querySelector("#modalEditar input[name='nombre']").value = nombre;
-    document.querySelector("#modalEditar input[name='email']").value = email;
-    document.querySelector("#modalEditar input[name='user']").value = user;
-
-
-    // Muestra el modal
-    window.modalEditar.showModal();
-  }
-</script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script type="text/javascript">
-  function Eliminar(id) {
-    console.log("Aqui")
-    Swal.fire({
-      title: "Eliminas tecnicos",
-      text: "¿Esta seguro que desea eliminar el tecnico?",
-      icon: "warning",
-      showCancelButton: true,
-      showCloseButton: true,
-      confirmButtonColor: "#0e8508",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si, estoy seguro!",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        window.location.replace("/api/tecnicos/delete/" + id);
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        mostrarMensaje("Producto NO eliminado", "Se ha cancelado la eliminación del producto con exito", "warning")
-      }
-    });
-  }
-</script>
-<script type="text/javascript">
-  //notificaciones
-  const urlParams = new URLSearchParams(window.location.search);
-  const myParam = urlParams.get("success");
-  switch (myParam) {
-    case "add": mostrarMensaje("Tecnico Agregado", "Se ha agregado el tecnico exitosamente", "success")
-      break
-    case "error-add": mostrarMensaje("Tecnico NO Agregado", "Lo sentimos a ocurrido un error al agregar el producto", "error")
-      break
-    case "delete": mostrarMensaje("Tecnico Eliminado", "El Tecnico a sido eliminado correctamente", "success")
-      break
-    case "error-delete": mostrarMensaje("Tecnico NO Eliminado", "Lo sentimos a ocurrido un error al eliminar este Tecnico", "error")
-      break
-    case "update": mostrarMensaje("Tecnico modificado", "Se ha modificado el Tecnico exitosamente", "success")
-      break
-    case "error-update": mostrarMensaje("Error al actualizar", "Lo sentimos a ocurrido un error al modificar", "error")
-      break
-
-  }
-
-  function mostrarMensaje(titulo, mensaje, icono) {
-    Swal.fire({
-      position: "center",
-      icon: icono,
-      title: titulo,
-      text: mensaje,
-      showConfirmButton: false,
-      timer: 2500,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        window.location.replace("/api/tecnicos/delete/" + id);
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        mostrarMensaje("Producto NO eliminado", "Se ha cancelado la eliminación del producto con exito", "error")
-      }
-    });
-  }
-</script>
