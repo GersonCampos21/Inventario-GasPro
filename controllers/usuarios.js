@@ -1,7 +1,6 @@
 const { request, response } = require("express");
 const userModel = require("../models/usuarios");
-
-
+const session = require("express-session")
 
 const loginSystem = async (req = request, res = response) => {
    try {
@@ -22,6 +21,7 @@ const loginPOST = async (req = request, res = response) => {
    const user = await userModel.findOne({usuario: usuario.user });
    const pass = await userModel.findOne({password: usuario.password });
     if(user && pass){
+      req.session.user = usuario.user
       res.redirect('/api/productos')
     }else{
       res.redirect("/login?succes=" + encodeURIComponent("error"));
@@ -82,11 +82,17 @@ const usersDELETE = async (req = request, res = response) => {
   }
 };
 
+const logout =  (req, res) => {
+  req.session.destroy()
+  res.redirect("/login")
+}
+
 module.exports = {
   loginSystem,
   loginPOST,
   usersPOST,
   usersDELETE,
   usersPUT,
-  usersGET
+  usersGET,
+  logout
 };
