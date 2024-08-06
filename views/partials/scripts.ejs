@@ -165,15 +165,15 @@
   const urlParams = new URLSearchParams(window.location.search);
   const myParam = urlParams.get("success");
   switch (myParam) {
-    case "add": mostrarMensaje("Producto Agregado", "Se ha agregardo el producto exitosamente", "success")
+    case "add": mostrarMensaje("Agregado", "Se ha agregardoexitosamente", "success")
       break
-    case "error-add": mostrarMensaje("Producto NO Agregado", "Lo sentimos a ocurrido un error al agregar el producto", "error")
+    case "error-add": mostrarMensaje("Error al Agregar", "Lo sentimos a ocurrido un error al agregar", "error")
       break
-    case "delete": mostrarMensaje("Producto Eliminado", "El producto a sido eliminado correctamente", "success")
+    case "delete": mostrarMensaje("Eliminado", "Se ha eliminado correctamente", "success")
       break
-    case "error-delete": mostrarMensaje("Producto NO Eliminado", "Lo sentimos a ocurrido un error al eliminar este producto", "error")
+    case "error-delete": mostrarMensaje("Error al eliminar", "Lo sentimos a ocurrido un error al eliminar", "error")
       break
-    case "update": mostrarMensaje("Producto modificado", "Se ha modificado el articulo exitosamente", "success")
+    case "update": mostrarMensaje("Modificación exitosa", "Se ha modificado exitosamente", "success")
       break
     case "error-update": mostrarMensaje("Error al actualizar", "Lo sentimos a ocurrido un error al modificar", "error")
       break
@@ -189,6 +189,51 @@
       showConfirmButton: false,
       timer: 2500,
     })
+  }
+</script>
+
+<script>
+  function editarTecnico(productoId) {
+    // Encuentra la fila correspondiente al producto
+    var fila = document.querySelector(`button[data-id='${productoId}']`).closest('tr');
+    // Obtén los datos de las celdas de la fila
+    var nombre = fila.cells[0].innerText.trim();
+    var email = fila.cells[1].innerText.trim();
+    var user = fila.cells[2].innerText.trim();
+    // var rol = fila.cells[4].innerText.trim();
+    console.log("Aqui", nombre, email, user, rol)
+    // Asigna los datos a los campos del formulario en el modal
+    document.querySelector("#modalEditar input[name='id']").value = productoId;
+    document.querySelector("#modalEditar input[name='nombre']").value = nombre;
+    document.querySelector("#modalEditar input[name='email']").value = email;
+    document.querySelector("#modalEditar input[name='user']").value = user;
+    // Muestra el modal
+    window.modalEditar.showModal();
+  }
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="text/javascript">
+  function EliminarTecnico(id) {
+    console.log("Aqui")
+    Swal.fire({
+      title: "Eliminas tecnicos",
+      text: "¿Esta seguro que desea eliminar el tecnico?",
+      icon: "warning",
+      showCancelButton: true,
+      showCloseButton: true,
+      confirmButtonColor: "#0e8508",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, estoy seguro!",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.replace("/api/tecnicos/delete/" + id);
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        mostrarMensaje("Producto NO eliminado", "Se ha cancelado la eliminación del producto con exito", "warning")
+      }
+    });
   }
 </script>
 
